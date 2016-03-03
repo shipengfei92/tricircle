@@ -107,6 +107,42 @@ cinder --debug show $volume_id
 cinder --debug delete $volume_id
 cinder --debug list
 ```
+### Quick Verify
+
+A sample of admin-openrc.sh and an installation verification script can be found in devstack/ directory.
+
+#### admin-openrc.sh
+
+Create client environment scripts for the admin user as the following:
+
+```
+export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=admin
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=password #change password as you set in your own environment
+export OS_AUTH_URL=http://127.0.0.1:5000
+export OS_IDENTITY_API_VERSION=3
+#It's very important to set region name to the top openstack, because tricircle has different API urls.
+export OS_REGION_NAME=RegionOne
+
+```
+The command to use the admin-openrc.sh is:
+
+```
+source devstack/admin-openrc.sh
+```
+
+#### verify_top_install.sh
+
+This script is to quickly verify the installation of Tricircle in Top OpenStack as the step 5-9 above and save the output to logs, you should do the following steps in Top OpenStack:
+
+```
+cd devstack/
+chmod +x verify_top_install.sh
+./verify_top_install.sh 2>&1 | tee logs
+```
 
 ## Cross-pod L3 networking with DevStack
 Now stateless design supports cross-pod l3 networking.
@@ -344,6 +380,22 @@ nova --os-region-name Pod2 get-vnc-console vm2 novnc
 Login one virtual machine via VNC and you should find it can "ping" the other
 virtual machine. Security group functionality is disabled in bottom OpenStack
 so no need to configure security group rule.
+
+## Quick verify
+
+A sample of admin-openrc.sh and an installation verification script can be found in devstack/ directory.
+
+And a demo blog with virtualbox will be generated soon.
+
+#### verify_cross_pod_install.sh
+
+This script is to quickly verify the installation of Tricircle in Cross Pod OpenStack as the contents above and save the output to logs, you should do the following steps in Node1 OpenStack:
+
+```
+cd devstack/
+chmod +x verify_cross_pod_install.sh
+./verify_cross_pod_install.sh 2>&1 | tee logs
+```
 
 ### North-South Networking
 
